@@ -1,12 +1,39 @@
-const url = 'https://www.deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6'
+const shuffle =
+  'https://www.deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6'
+const newDeck = 'https://www.deckofcardsapi.com/api/deck/new/draw/?count=2'
 
 document.querySelector('button').addEventListener('click', getFetch)
+const playerCards = document.querySelector('.playerCards')
 
 function getFetch() {
-  fetch(url)
+  fetch(newDeck)
     .then((res) => res.json())
     .then((data) => {
       console.log(data)
+      document.querySelectorAll('img').forEach((img) => img.remove())
+
+      //Check to see if images are already displayed, if so then new cards should not display.
+
+      data.cards.forEach((card) => {
+        let img = document.createElement('img')
+        img.src = card.image
+        playerCards.appendChild(img)
+      })
     })
     .catch((err) => console.log(`error: ${err.message}`))
 }
+//TODO: Get the value of whatever cards the player has and check to see if they sum to 21 or more. If they have 21, 'blackjack', if more than 21, they lose, if less than 21, they have the option to 'hit'(get a card) or 'stand'(keep whatever cards they already have).
+
+//TODO: Add a computer for the player to 'compete' against.
+
+//TODO: point system for the player to bet with?
+
+/*TODO: RULES OF BLACKJACK
+https://bicyclecards.com/how-to-play/blackjack/
+ Value of Cards: It is up to each individual player if an ace is worth 1 or 11. Face cards are 10 and any other card is its pip value.
+ Betting: Before the deal begins, each player places a bet, in chips, in front of them in the designated area. Minimum and maximum limits are established on the betting, and the general limits are from $2 to $500.
+ THE DEAL:
+ When all the players have placed their bets, the dealer gives one card face up to each player in rotation clockwise, and then one card face up to themselves. Another round of cards is then dealt face up to each player, but the dealer takes the second card face down. Thus, each player except the dealer receives two cards face up, and the dealer receives one card face up and one card face down. (In some games, played with only one deck, the players' cards are dealt face down and they get to hold them. Today, however, virtually all Blackjack games feature the players' cards dealt face up on the condition that no player may touch any cards.)
+ THEY PLAY:
+ ...must decide whether to "stand" (not ask for another card) or "hit" (ask for another card in an attempt to get closer to a count of 21, or even hit 21 exactly).
+ */
