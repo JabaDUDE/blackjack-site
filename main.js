@@ -1,6 +1,6 @@
 const shuffle =
   'https://www.deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6'
-const newDeck = 'https://www.deckofcardsapi.com/api/deck/new/draw/?count=2'
+const newDeck = 'https://www.deckofcardsapi.com/api/deck/new/draw/?count=4'
 
 document.querySelector('button').addEventListener('click', getFetch)
 const playerCards = document.querySelector('.playerCards')
@@ -14,10 +14,16 @@ function getFetch() {
       console.log(data)
       //Make sure if there are two cards displayed, they are removed so two new cards can replace them.
       document.querySelectorAll('img').forEach((img) => img.remove())
-      data.cards.forEach((card) => {
+      data.cards.forEach((card, i) => {
         let img = document.createElement('img')
         img.src = card.image
-        playerCards.appendChild(img)
+        //Split the 4 cards drawn so computer gets 2 cards and player gets 2 cards. the player's cards will always pull from 0 and 1 index of data.cards array. last two will go to computer.
+        //this conditional checks index of array and appends the img to either the computer or player's hand.
+        if (i === 0 || i === 1) {
+          playerCards.appendChild(img)
+        } else {
+          computerCards.appendChild(img)
+        }
       })
     })
     .catch((err) => console.log(`error: ${err.message}`))
