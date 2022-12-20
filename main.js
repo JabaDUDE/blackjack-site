@@ -4,16 +4,16 @@ const newDeck = 'https://www.deckofcardsapi.com/api/deck/new/draw/?count=2'
 
 document.querySelector('button').addEventListener('click', getFetch)
 const playerCards = document.querySelector('.playerCards')
+//TODO: Find a way to give one visible card to computerCards and the other 'face down'
+const computerCards = document.querySelector('.computerCards')
 
 function getFetch() {
   fetch(newDeck)
     .then((res) => res.json())
     .then((data) => {
       console.log(data)
+      //Make sure if there are two cards displayed, they are removed so two new cards can replace them.
       document.querySelectorAll('img').forEach((img) => img.remove())
-
-      //Check to see if images are already displayed, if so then new cards should not display.
-
       data.cards.forEach((card) => {
         let img = document.createElement('img')
         img.src = card.image
