@@ -1,16 +1,22 @@
 const shuffle =
   'https://www.deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6'
 const newDeck = 'https://www.deckofcardsapi.com/api/deck/new/draw/?count=4'
+//buttons
+document.querySelector('button').addEventListener('click', getDeck)
+//TODO: figure out a way to grab the deck_id from the getDeck so I can draw a card from the deck within the new function.
+// document.querySelector('.hit').addEventListener('click', getCard)
 
-document.querySelector('button').addEventListener('click', getFetch)
 const playerCards = document.querySelector('.playerCards')
 //TODO: Find a way to give one visible card to computerCards and the other 'face down'
 const computerCards = document.querySelector('.computerCards')
 
-function getFetch() {
+function getDeck() {
   fetch(newDeck)
     .then((res) => res.json())
     .then((data) => {
+      //Capture deck id so we can draw from same deck.
+      const DECK_ID = data.deck_id
+      const drawCard = `https://www.deckofcardsapi.com/api/deck/${DECK_ID}/draw/?count=2`
       console.log(data)
       //Make sure if there are two cards displayed, they are removed so two new cards can replace them.
       document.querySelectorAll('img').forEach((img) => img.remove())
