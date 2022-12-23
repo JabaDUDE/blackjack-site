@@ -16,7 +16,7 @@ function getDeck() {
     .then((data) => {
       //Capture deck id so we can draw from same deck.
       const DECK_ID = data.deck_id
-      const drawCard = `https://www.deckofcardsapi.com/api/deck/${DECK_ID}/draw/?count=2`
+      const drawCard = `https://www.deckofcardsapi.com/api/deck/${DECK_ID}/draw/?count=1`
       console.log(data)
       //Make sure if there are two cards displayed, they are removed so two new cards can replace them.
       document.querySelectorAll('img').forEach((img) => img.remove())
