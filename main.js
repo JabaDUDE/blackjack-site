@@ -2,10 +2,10 @@ const shuffle =
   'https://www.deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6'
 const newDeck = 'https://www.deckofcardsapi.com/api/deck/new/draw/?count=4'
 //buttons
-document.querySelector('button').addEventListener('click', getDeck)
+document.querySelector('.newDeck').addEventListener('click', getDeck)
 //TODO: figure out a way to grab the deck_id from the getDeck so I can draw a card from the deck within the new function.
 // document.querySelector('.hit').addEventListener('click', getCard)
-
+document.querySelector('.hit').addEventListener('click', addCard)
 const playerCards = document.querySelector('.playerCards')
 //TODO: Find a way to give one visible card to computerCards and the other 'face down'
 const computerCards = document.querySelector('.computerCards')
@@ -16,7 +16,7 @@ function getDeck() {
     .then((data) => {
       //Capture deck id so we can draw from same deck.
       const DECK_ID = data.deck_id
-      const drawCard = `https://www.deckofcardsapi.com/api/deck/${DECK_ID}/draw/?count=1`
+      drawCard = `https://www.deckofcardsapi.com/api/deck/${DECK_ID}/draw/?count=1`
       console.log(data)
       //Make sure if there are two cards displayed, they are removed so two new cards can replace them.
       document.querySelectorAll('img').forEach((img) => img.remove())
@@ -33,6 +33,14 @@ function getDeck() {
       })
     })
     .catch((err) => console.log(`error: ${err.message}`))
+}
+
+function addCard() {
+  fetch(drawCard)
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data)
+    })
 }
 //TODO: Get the value of whatever cards the player has and check to see if they sum to 21 or more. If they have 21, 'blackjack', if more than 21, they lose, if less than 21, they have the option to 'hit'(get a card) or 'stand'(keep whatever cards they already have).
 
