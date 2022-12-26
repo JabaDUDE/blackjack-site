@@ -3,11 +3,10 @@ const shuffle =
 const newDeck = 'https://www.deckofcardsapi.com/api/deck/new/draw/?count=4'
 //A spot to store the deck_id
 let deckID = ''
-//buttons
-
-//TODO: figure out a way to grab the deck_id from the getDeck so I can draw a card from the deck within the new function.
-// document.querySelector('.hit').addEventListener('click', getCard)
-
+//SPACE TO KEEP TRACK OF SCORE OF BOTH PLAYER AND COMPUTER
+let playerScore = 0
+let computerScore = 0
+//SPACE TO PLACE CARDS AT FOR BOTH PLAYERS
 const playerCards = document.querySelector('.playerCards')
 //TODO: Find a way to give one visible card to computerCards and the other 'face down'
 const computerCards = document.querySelector('.computerCards')
@@ -34,7 +33,6 @@ document.querySelector('.newDeck').addEventListener('click', () => {
       //Capture deck id so we can draw from same deck.
       deckID = data.deck_id
 
-      console.log(data)
       //Make sure if there are two cards displayed, they are removed so two new cards can replace them.
       document.querySelectorAll('img').forEach((img) => img.remove())
       data.cards.forEach((card, i) => {
