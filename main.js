@@ -39,8 +39,19 @@ document.querySelector('.newDeck').addEventListener('click', () => {
       let currentCompScore = 0
       //Make sure if there are two cards displayed, they are removed so two new cards can replace them.
       document.querySelectorAll('img').forEach((img) => img.remove())
+
       //Attaching images to the webpage
       data.cards.forEach((card, i) => {
+        //Looks at face card and assigns them default value of '10' so it can calculate sum of hand
+        //TODO: Figure out a way to check if the value is an 'Ace' and assign it either value of '1' or '11' depending on whether it goes over 21 or not.
+        if (
+          card.value.startsWith('K') ||
+          card.value.startsWith('Q') ||
+          card.value.startsWith('J') ||
+          card.value.startsWith('A')
+        ) {
+          card.value = '10'
+        }
         let img = document.createElement('img')
         img.src = card.image
         //Split the 4 cards drawn so computer gets 2 cards and player gets 2 cards. the player's cards will always pull from 0 and 1 index of data.cards array. last two will go to computer.
