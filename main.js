@@ -4,8 +4,7 @@ const newDeck = 'https://www.deckofcardsapi.com/api/deck/new/draw/?count=4'
 //A spot to store the deck_id
 let deckID = ''
 //SPACE TO KEEP TRACK OF SCORE OF BOTH PLAYER AND COMPUTER
-let playerScore = 0
-let computerScore = 0
+
 //SPACE TO PLACE CARDS AT FOR BOTH PLAYERS
 const playerCards = document.querySelector('.playerCards')
 //TODO: Find a way to give one visible card to computerCards and the other 'face down'
@@ -13,7 +12,8 @@ const computerCards = document.querySelector('.computerCards')
 
 //TODO: Get the value of whatever cards the player has and check to see if they sum to 21 or more. If they have 21, 'blackjack', if more than 21, they lose, if less than 21, they have the option to 'hit'(get a card) or 'stand'(keep whatever cards they already have).
 
-//TODO: Add a computer for the player to 'compete' against.
+let computerScore = document.querySelector('.computerScore')
+let playerScore = document.querySelector('.playerScore')
 
 //TODO: point system for the player to bet with?
 
@@ -26,15 +26,20 @@ https://bicyclecards.com/how-to-play/blackjack/
  THEY PLAY:
  ...must decide whether to "stand" (not ask for another card) or "hit" (ask for another card in an attempt to get closer to a count of 21, or even hit 21 exactly).
  */
+
+//BUTTON FOR NEW DECK
 document.querySelector('.newDeck').addEventListener('click', () => {
   fetch(newDeck)
     .then((res) => res.json())
     .then((data) => {
       //Capture deck id so we can draw from same deck.
       deckID = data.deck_id
-
+      console.log(data)
+      let currentPlayerScore = 0
+      let currentCompScore = 0
       //Make sure if there are two cards displayed, they are removed so two new cards can replace them.
       document.querySelectorAll('img').forEach((img) => img.remove())
+      //Attaching images to the webpage
       data.cards.forEach((card, i) => {
         let img = document.createElement('img')
         img.src = card.image
@@ -42,10 +47,13 @@ document.querySelector('.newDeck').addEventListener('click', () => {
         //this conditional checks index of array and appends the img to either the computer or player's hand.
         if (i === 0 || i === 1) {
           playerCards.appendChild(img)
+          currentPlayerScore += parseInt(card.value)
         } else {
           computerCards.appendChild(img)
         }
       })
+      //TODO: face cards are generating a NaN because their value isn't numerical
+      playerScore.innerHTML = `Player Score: ${currentPlayerScore}`
     })
     .catch((err) => console.log(`error: ${err.message}`))
 })
