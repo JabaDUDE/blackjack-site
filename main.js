@@ -12,7 +12,7 @@ const computerCards = document.querySelector('.computerCards')
 
 //TODO: Get the value of whatever cards the player has and check to see if they sum to 21 or more. If they have 21, 'blackjack', if more than 21, they lose, if less than 21, they have the option to 'hit'(get a card) or 'stand'(keep whatever cards they already have).
 
-let computerScore = document.querySelector('.computerScore')
+let computerScore = document.querySelector('.compScore')
 let playerScore = document.querySelector('.playerScore')
 
 //TODO: point system for the player to bet with?
@@ -50,10 +50,12 @@ document.querySelector('.newDeck').addEventListener('click', () => {
           currentPlayerScore += parseInt(card.value)
         } else {
           computerCards.appendChild(img)
+          currentCompScore += parseInt(card.value)
         }
       })
       //TODO: face cards are generating a NaN because their value isn't numerical
       playerScore.innerHTML = `Player Score: ${currentPlayerScore}`
+      computerScore.innerHTML = `Computer Score: ${currentCompScore}`
     })
     .catch((err) => console.log(`error: ${err.message}`))
 })
