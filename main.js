@@ -14,7 +14,18 @@ const computerCards = document.querySelector('.computerCards')
 
 let computerScore = document.querySelector('.compScore')
 let playerScore = document.querySelector('.playerScore')
+const winner = document.querySelector('.winner')
 
+let currentPlayerScore = 0
+let currentCompScore = 0
+//TODO: bust and blackjack do not appear on the webpage. Placed it here so I can deal with it tomorrow
+switch (currentPlayerScore) {
+  case currentPlayerScore > 21:
+    winner.innerHTML = 'BUST!'
+    break
+  case currentPlayerScore == 21:
+    winner.innerHTML = 'BLACKJACK!'
+}
 //TODO: point system for the player to bet with?
 
 /*TODO: RULES OF BLACKJACK
@@ -32,11 +43,13 @@ document.querySelector('.newDeck').addEventListener('click', () => {
   fetch(newDeck)
     .then((res) => res.json())
     .then((data) => {
+      //reset the score
+      currentPlayerScore = 0
+      currentCompScore = 0
       //Capture deck id so we can draw from same deck.
       deckID = data.deck_id
       console.log(data)
-      let currentPlayerScore = 0
-      let currentCompScore = 0
+
       //Make sure if there are two cards displayed, they are removed so two new cards can replace them.
       document.querySelectorAll('img').forEach((img) => img.remove())
 
@@ -47,10 +60,11 @@ document.querySelector('.newDeck').addEventListener('click', () => {
         if (
           card.value.startsWith('K') ||
           card.value.startsWith('Q') ||
-          card.value.startsWith('J') ||
-          card.value.startsWith('A')
+          card.value.startsWith('J')
         ) {
           card.value = '10'
+        } else if (card.value.startsWith('A')) {
+          currentPlayerScore > 11 ? (card.value = '1') : (card.value = '11')
         }
         let img = document.createElement('img')
         img.src = card.image
@@ -76,10 +90,26 @@ document.querySelector('.addCard').addEventListener('click', () => {
     .then((res) => res.json())
     .then((data) => {
       console.log(data)
+
       data.cards.forEach((card) => {
+        //set value for card that is being drawn.
+        if (
+          card.value.startsWith('K') ||
+          card.value.startsWith('Q') ||
+          card.value.startsWith('J')
+        ) {
+          card.value = '10'
+        } else if (card.value.startsWith('A')) {
+          currentPlayerScore > 11 ? (card.value = '1') : (card.value = '11')
+        } else {
+          card.value = card.value
+        }
+        currentPlayerScore += parseInt(card.value)
+        playerScore.innerHTML = `Player Score: ${currentPlayerScore}`
         let img = document.createElement('img')
         img.src = card.image
         playerCards.appendChild(img)
       })
     })
+    .catch((err) => console.log(`error: ${err.message}`))
 })
