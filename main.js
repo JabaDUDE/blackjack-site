@@ -19,13 +19,7 @@ const winner = document.querySelector('.winner')
 let currentPlayerScore = 0
 let currentCompScore = 0
 //TODO: bust and blackjack do not appear on the webpage. Placed it here so I can deal with it tomorrow
-switch (currentPlayerScore) {
-  case currentPlayerScore > 21:
-    winner.innerHTML = 'BUST!'
-    break
-  case currentPlayerScore == 21:
-    winner.innerHTML = 'BLACKJACK!'
-}
+
 //TODO: point system for the player to bet with?
 
 /*TODO: RULES OF BLACKJACK
@@ -81,6 +75,11 @@ document.querySelector('.newDeck').addEventListener('click', () => {
       //TODO: face cards are generating a NaN because their value isn't numerical
       playerScore.innerHTML = `Player Score: ${currentPlayerScore}`
       computerScore.innerHTML = `Computer Score: ${currentCompScore}`
+      currentPlayerScore === 21
+        ? (winner.innerHTML = `BLACKJACK!`)
+        : currentPlayerScore > 21
+        ? (winner.innerHTML = `You lose!`)
+        : (winner.innerHTML = `Hit or Check?`)
     })
     .catch((err) => console.log(`error: ${err.message}`))
 })
@@ -110,6 +109,13 @@ document.querySelector('.addCard').addEventListener('click', () => {
         img.src = card.image
         playerCards.appendChild(img)
       })
+      console.log(currentPlayerScore)
+      currentPlayerScore === 21
+        ? (winner.innerHTML = `BLACKJACK!`)
+        : currentPlayerScore > 21
+        ? (winner.innerHTML = `You lose!`)
+        : (winner.innerHTML = `Hit or Check?`)
     })
     .catch((err) => console.log(`error: ${err.message}`))
 })
+console.log(currentPlayerScore)
