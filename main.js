@@ -49,8 +49,7 @@ document.querySelector('.newDeck').addEventListener('click', () => {
 
       //Attaching images to the webpage
       data.cards.forEach((card, i) => {
-        //Looks at face card and assigns them default value of '10' so it can calculate sum of hand
-        //TODO: Figure out a way to check if the value is an 'Ace' and assign it either value of '1' or '11' depending on whether it goes over 21 or not.
+        //Assign value to cards:
         if (
           card.value.startsWith('K') ||
           card.value.startsWith('Q') ||
@@ -60,16 +59,21 @@ document.querySelector('.newDeck').addEventListener('click', () => {
         } else if (card.value.startsWith('A')) {
           currentPlayerScore > 11 ? (card.value = '1') : (card.value = '11')
         }
+        //Create image elements
         let img = document.createElement('img')
         img.src = card.image
+        let flip = document.createElement('img')
+        flip.src = 'backOfCard.png'
         //Split the 4 cards drawn so computer gets 2 cards and player gets 2 cards. the player's cards will always pull from 0 and 1 index of data.cards array. last two will go to computer.
         //this conditional checks index of array and appends the img to either the computer or player's hand.
         if (i === 0 || i === 1) {
           playerCards.appendChild(img)
           currentPlayerScore += parseInt(card.value)
-        } else {
+        } else if (i === 2) {
           computerCards.appendChild(img)
           currentCompScore += parseInt(card.value)
+        } else if (i === 3) {
+          computerCards.appendChild(flip)
         }
       })
       //TODO: face cards are generating a NaN because their value isn't numerical
