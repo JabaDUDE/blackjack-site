@@ -7,10 +7,8 @@ let deckID = ''
 
 //SPACE TO PLACE CARDS AT FOR BOTH PLAYERS
 const playerCards = document.querySelector('.playerCards')
-//TODO: Find a way to give one visible card to computerCards and the other 'face down'
-const computerCards = document.querySelector('.computerCards')
 
-//TODO: Get the value of whatever cards the player has and check to see if they sum to 21 or more. If they have 21, 'blackjack', if more than 21, they lose, if less than 21, they have the option to 'hit'(get a card) or 'stand'(keep whatever cards they already have).
+const computerCards = document.querySelector('.computerCards')
 
 let computerScore = document.querySelector('.compScore')
 let playerScore = document.querySelector('.playerScore')
@@ -18,7 +16,6 @@ const winner = document.querySelector('.winner')
 
 let currentPlayerScore = 0
 let currentCompScore = 0
-//TODO: bust and blackjack do not appear on the webpage. Placed it here so I can deal with it tomorrow
 
 //TODO: point system for the player to bet with?
 
@@ -76,7 +73,6 @@ document.querySelector('.newDeck').addEventListener('click', () => {
           computerCards.appendChild(flip)
         }
       })
-      //TODO: face cards are generating a NaN because their value isn't numerical
       playerScore.innerHTML = `Player Score: ${currentPlayerScore}`
       computerScore.innerHTML = `Computer Score: ${currentCompScore}`
       currentPlayerScore === 21
