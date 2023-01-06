@@ -46,16 +46,10 @@ document.querySelector('.newDeck').addEventListener('click', () => {
 
       //Attaching images to the webpage
       data.cards.forEach((card, i) => {
-        //Assign value to cards:
-        if (
-          card.value.startsWith('K') ||
-          card.value.startsWith('Q') ||
-          card.value.startsWith('J')
-        ) {
-          card.value = '10'
-        } else if (card.value.startsWith('A')) {
-          currentPlayerScore > 11 ? (card.value = '1') : (card.value = '11')
-        }
+        //ASSIGN VALUE TO CARDS (MOVE TO FUNCTION CARDVALUE)
+
+        cardValue(card)
+        console.log(cardValue(card))
         //Create image elements
         let img = document.createElement('img')
         img.src = card.image
@@ -75,11 +69,8 @@ document.querySelector('.newDeck').addEventListener('click', () => {
       })
       playerScore.innerHTML = `Player Score: ${currentPlayerScore}`
       computerScore.innerHTML = `Computer Score: ${currentCompScore}`
-      currentPlayerScore === 21
-        ? (winner.innerHTML = `BLACKJACK!`)
-        : currentPlayerScore > 21
-        ? (winner.innerHTML = `You lose!`)
-        : (winner.innerHTML = `Hit or Check?`)
+
+      whoWins(currentPlayerScore)
     })
     .catch((err) => console.log(`error: ${err.message}`))
 })
@@ -92,30 +83,40 @@ document.querySelector('.addCard').addEventListener('click', () => {
 
       data.cards.forEach((card) => {
         //set value for card that is being drawn.
-        if (
-          card.value.startsWith('K') ||
-          card.value.startsWith('Q') ||
-          card.value.startsWith('J')
-        ) {
-          card.value = '10'
-        } else if (card.value.startsWith('A')) {
-          currentPlayerScore > 11 ? (card.value = '1') : (card.value = '11')
-        } else {
-          card.value = card.value
-        }
+
+        cardValue(card)
         currentPlayerScore += parseInt(card.value)
         playerScore.innerHTML = `Player Score: ${currentPlayerScore}`
         let img = document.createElement('img')
         img.src = card.image
         playerCards.appendChild(img)
       })
-      console.log(currentPlayerScore)
-      currentPlayerScore === 21
-        ? (winner.innerHTML = `BLACKJACK!`)
-        : currentPlayerScore > 21
-        ? (winner.innerHTML = `You lose!`)
-        : (winner.innerHTML = `Hit or Check?`)
+
+      whoWins(currentPlayerScore)
     })
     .catch((err) => console.log(`error: ${err.message}`))
 })
-console.log(currentPlayerScore)
+
+//Functions to break down tasks
+//Card Value
+function cardValue(card) {
+  if (
+    card.value.startsWith('K') ||
+    card.value.startsWith('Q') ||
+    card.value.startsWith('J')
+  ) {
+    return (card.value = '10')
+  } else if (card.value.startsWith('A')) {
+    return currentPlayerScore > 11 ? (card.value = '1') : (card.value = '11')
+  } else {
+    return (card.value = card.value)
+  }
+}
+//Writing winner
+function whoWins(currentPlayerScore) {
+  return currentPlayerScore === 21
+    ? (winner.innerHTML = `BLACKJACK!`)
+    : currentPlayerScore > 21
+    ? (winner.innerHTML = `You lose!`)
+    : (winner.innerHTML = `Hit or Check?`)
+}
