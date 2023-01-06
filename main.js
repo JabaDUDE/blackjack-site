@@ -13,10 +13,15 @@ const computerCards = document.querySelector('.computerCards')
 let computerScore = document.querySelector('.compScore')
 let playerScore = document.querySelector('.playerScore')
 const winner = document.querySelector('.winner')
+//create img element
 
+let flip = document.createElement('img')
+//set initial score
 let currentPlayerScore = 0
 let currentCompScore = 0
 
+let cardImageSource = []
+let cardValueStorage = []
 //TODO: point system for the player to bet with?
 
 /*TODO: RULES OF BLACKJACK
@@ -37,6 +42,10 @@ document.querySelector('.newDeck').addEventListener('click', () => {
       //reset the score
       currentPlayerScore = 0
       currentCompScore = 0
+      //reset the buttons
+      STAY.disabled = false
+      HITME.disabled = false
+      winner.style.color = 'white'
       //Capture deck id so we can draw from same deck.
       deckID = data.deck_id
       console.log(data)
@@ -50,21 +59,24 @@ document.querySelector('.newDeck').addEventListener('click', () => {
 
         cardValue(card)
         console.log(cardValue(card))
-        //Create image elements
+        //set img element sources
         let img = document.createElement('img')
         img.src = card.image
-        let flip = document.createElement('img')
+        cardImageSource.push(card.image)
         flip.src = 'backOfCard.png'
         //Split the 4 cards drawn so computer gets 2 cards and player gets 2 cards. the player's cards will always pull from 0 and 1 index of data.cards array. last two will go to computer.
         //this conditional checks index of array and appends the img to either the computer or player's hand.
         if (i === 0 || i === 1) {
           playerCards.appendChild(img)
           currentPlayerScore += parseInt(card.value)
+          cardValueStorage.push(card.value)
         } else if (i === 2) {
           computerCards.appendChild(img)
           currentCompScore += parseInt(card.value)
+          cardValueStorage.push(card.value)
         } else if (i === 3) {
           computerCards.appendChild(flip)
+          cardValueStorage.push(card.value)
         }
       })
       playerScore.innerHTML = `Player Score: ${currentPlayerScore}`
@@ -74,8 +86,8 @@ document.querySelector('.newDeck').addEventListener('click', () => {
     })
     .catch((err) => console.log(`error: ${err.message}`))
 })
-
-document.querySelector('.addCard').addEventListener('click', () => {
+const HITME = document.querySelector('.addCard')
+HITME.addEventListener('click', () => {
   fetch(`https://www.deckofcardsapi.com/api/deck/${deckID}/draw/?count=1`)
     .then((res) => res.json())
     .then((data) => {
@@ -97,6 +109,27 @@ document.querySelector('.addCard').addEventListener('click', () => {
     .catch((err) => console.log(`error: ${err.message}`))
 })
 
+const STAY = document.querySelector('.keepHand')
+//Create eventlistener for a 'stay' function that compares the card values of both player and computer and returns a winner!
+STAY.addEventListener('click', () => {
+  console.log(currentPlayerScore, currentCompScore)
+  STAY.disabled = true
+  HITME.disabled = true
+  flip.src = cardImageSource[3]
+  currentCompScore += parseInt(cardValueStorage[3])
+  computerScore.innerHTML = `Computer Score: ${currentCompScore}`
+  if (currentCompScore > currentPlayerScore && currentCompScore <= 21) {
+    winner.innerHTML = `You lose!`
+    winner.style.color = 'red'
+  } else if (
+    currentCompScore < currentPlayerScore &&
+    currentPlayerScore <= 21
+  ) {
+    winner.innerHTML = `You win!`
+    winner.style.color = 'green'
+  }
+})
+
 //Functions to break down tasks
 //Card Value
 function cardValue(card) {
@@ -114,9 +147,22 @@ function cardValue(card) {
 }
 //Writing winner
 function whoWins(currentPlayerScore) {
-  return currentPlayerScore === 21
-    ? (winner.innerHTML = `BLACKJACK!`)
-    : currentPlayerScore > 21
-    ? (winner.innerHTML = `You lose!`)
-    : (winner.innerHTML = `Hit or Check?`)
+  if (currentPlayerScore === 21) {
+    winner.innerHTML = `BLACKJACK!`
+    STAY.disabled = true
+    HITME.disabled = true
+    winner.style.color = 'green'
+  } else if (currentPlayerScore > 21) {
+    winner.innerHTML = `YOU LOSE!`
+    STAY.disabled = true
+    HITME.disabled = true
+    winner.style.color = 'red'
+  } else {
+    winner.innerHTML = `Hit or Check?`
+  }
+  // return currentPlayerScore === 21
+  //   ? (winner.innerHTML = `BLACKJACK!`)
+  //   : currentPlayerScore > 21
+  //   ? (winner.innerHTML = `You lose!`)
+  //   : (winner.innerHTML = `Hit or Check?`)
 }
