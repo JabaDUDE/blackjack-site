@@ -6,21 +6,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Blackjack</title>
     <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body>
-    <div class="card-table">
+    <div class="card-table text-lg font-black">
       <h1 class="winner"></h1>
       <h1 class="computerHand">Computer's Hand:</h1>
       <h2 class="compScore"></h2>
-      <div class="computerCards"></div>
-      <div class="button-group">
-        <button class="newDeck">New Deck</button>
-        <button class="addCard">Hit Me!</button>
-        <button class="keepHand">Stay!</button>
+      <div class="computerCards flex flex-row"></div>
+      <div class="button-group my-10">
+        <button
+          class="newDeck bg-blue-500 hover:bg-blue-500 text-white-700 font-bold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+        >
+          New Deck
+        </button>
+        <button
+          class="addCard bg-blue-500 hover:bg-blue-500 text-white-700 font-bold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+        >
+          Hit Me!
+        </button>
+        <button
+          class="keepHand bg-blue-500 hover:bg-blue-500 text-white-700 font-bold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+        >
+          Stay!
+        </button>
       </div>
       <h1 class="playerHand">Player's Hand:</h1>
       <h2 class="playerScore"></h2>
-      <div class="playerCards"></div>
+      <div class="playerCards flex flex-row"></div>
     </div>
     <script src="main.js"></script>
   </body>

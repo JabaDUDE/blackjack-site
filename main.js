@@ -119,14 +119,14 @@ STAY.addEventListener('click', () => {
   currentCompScore += parseInt(cardValueStorage[3])
   computerScore.innerHTML = `Computer Score: ${currentCompScore}`
   if (currentCompScore > currentPlayerScore && currentCompScore <= 21) {
-    winner.innerHTML = `You lose!`
+    winner.innerHTML = `YOU LOSE!`
     winner.style.color = 'red'
   } else if (
     currentCompScore < currentPlayerScore &&
     currentPlayerScore <= 21
   ) {
-    winner.innerHTML = `You win!`
-    winner.style.color = 'green'
+    winner.innerHTML = `YOU WIN!`
+    winner.style.color = '#90EE90'
   }
 })
 
@@ -151,12 +151,14 @@ function whoWins(currentPlayerScore) {
     winner.innerHTML = `BLACKJACK!`
     STAY.disabled = true
     HITME.disabled = true
-    winner.style.color = 'green'
+    winner.style.color = '#90EE90'
   } else if (currentPlayerScore > 21) {
     winner.innerHTML = `YOU LOSE!`
     STAY.disabled = true
     HITME.disabled = true
     winner.style.color = 'red'
+  } else if (currentPlayerScore === currentCompScore) {
+    winner.innerHTML = `DRAW!`
   } else {
     winner.innerHTML = `Hit or Check?`
   }
